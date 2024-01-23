@@ -1,7 +1,9 @@
-# Carbon Emission Calculator
+# Overview
 
-This is the Final assessment template for CASA0014 - Please use this template and edit the relevant sections to personalise.
-This section has a short introduction to what the application is
+Carbon Emission Calculator is a mobile application designed to help users understand and manage their carbon footprint. With the exacerbation of climate change, the impact of our carbon footprint on the planet has become increasingly evident. The goal of this application is to calculate users' carbon emissions, provide practical advice and information, and assist users in taking actions to reduce their environmental impact.
+
+# Vision
+The vision of Carbon Emission Calculator is to contribute to the global effort to mitigate climate change by inspiring individual and community environmental actions. We believe that, by providing a simple and practical tool, everyone can contribute to a sustainable future for the planet.
 
 ## Use this README File 
 
