@@ -8,7 +8,7 @@ on:
 
 defaults:  
   run:
-    working-directory: /Users/wanghaoming/Desktop/carbon-emission-calculator/app
+    working-directory: ./app
 
 jobs:
   build:
