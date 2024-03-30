@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+defaults:  
+  run:
+    working-directory: /Users/wanghaoming/Desktop/carbon-emission-calculator
+
 jobs:
   build:
     runs-on: ubuntu-latest
