@@ -84,14 +84,14 @@ class _SettingsState extends State<Settings> {
     return ListView(
       children: <Widget>[
         ListTile(
-          title: Text('个人信息'),
+          title: Text('Personal Information'),
           leading: Icon(Icons.person),
           onTap: () {
             // 这里可以添加点击事件，比如打开编辑个人信息的页面
           },
         ),
         SwitchListTile(
-          title: Text('启用通知'),
+          title: Text('Enable notifications'),
           value: _notificationsEnabled,
           onChanged: (bool value) {
             setState(() {
@@ -102,7 +102,7 @@ class _SettingsState extends State<Settings> {
           secondary: Icon(Icons.notifications_active),
         ),
         ListTile(
-          title: Text('颜色主题'),
+          title: Text('Color theme'),
           leading: Icon(Icons.color_lens),
           onTap: () {
             // 这里可以添加逻辑，比如打开颜色主题选择器
