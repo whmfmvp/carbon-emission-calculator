@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     Text('Knowledge', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Settings', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Settings(),
   ];
 
   void _onItemTapped(int index) {
@@ -67,6 +67,49 @@ class _MyHomePageState extends State<MyHomePage> {
   unselectedItemColor: Colors.grey, 
         onTap: _onItemTapped,
       ),
+    );
+  }
+}
+
+class Settings extends StatefulWidget {
+  @override
+  _SettingsState createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  bool _notificationsEnabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          title: Text('个人信息'),
+          leading: Icon(Icons.person),
+          onTap: () {
+            // 这里可以添加点击事件，比如打开编辑个人信息的页面
+          },
+        ),
+        SwitchListTile(
+          title: Text('启用通知'),
+          value: _notificationsEnabled,
+          onChanged: (bool value) {
+            setState(() {
+              _notificationsEnabled = value;
+            });
+            // 这里可以添加其他逻辑，比如保存偏好到本地
+          },
+          secondary: Icon(Icons.notifications_active),
+        ),
+        ListTile(
+          title: Text('颜色主题'),
+          leading: Icon(Icons.color_lens),
+          onTap: () {
+            // 这里可以添加逻辑，比如打开颜色主题选择器
+          },
+        ),
+        // 添加更多设置项...
+      ],
     );
   }
 }
