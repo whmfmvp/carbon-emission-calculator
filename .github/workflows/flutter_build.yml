@@ -6,6 +6,13 @@ on:
     # tags:
     # - "v1.0.1"          # In this case when you tag your commit with v1.0.0 for example
 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+
+
 defaults:  
   run:
     working-directory: ./app
