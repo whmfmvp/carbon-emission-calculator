@@ -18,11 +18,6 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.1
 
-- name: Push tag
-  run: |
-    git push origin "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
-
-
 environment:
   sdk: '>=3.2.3 <4.0.0'
 
