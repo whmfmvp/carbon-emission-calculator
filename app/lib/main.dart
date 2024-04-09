@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 import 'splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'ColorThemePage.dart';
+import 'theme_provider.dart';
+import 'package:provider/provider.dart';
 
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final themeProvider = ThemeProvider();
+  await themeProvider.loadThemeColor();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => themeProvider,
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final themeColor = Provider.of<ThemeProvider>(context).themeColor;
     return MaterialApp(
    
       home: SplashScreen(),
-
+      theme: ThemeData(
+        primaryColor: themeColor,
+        scaffoldBackgroundColor: themeColor, // 设置背景颜色
+      ),
     );
   }
 }
@@ -108,7 +126,9 @@ class _SettingsState extends State<Settings> {
           title: Text('Color theme'),
           leading: Icon(Icons.color_lens),
           onTap: () {
-            // 这里可以添加逻辑，比如打开颜色主题选择器
+            Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ColorThemePage()),
+    );
           },
         ),
         // 添加更多设置项...
@@ -160,10 +180,19 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
 
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Color theme saved'),
+      duration: Duration(seconds: 2),
+    ),
+  );
+
     Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pop();
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
