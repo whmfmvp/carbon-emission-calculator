@@ -33,6 +33,12 @@ class _ColorThemePageState extends State<ColorThemePage> {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt('colorThemeIndex', index);
 
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Color theme saved'),
+      duration: Duration(seconds: 2),
+    ),
+  );
 
   await Future.delayed(Duration(seconds: 2));
     Navigator.of(context).pop();

@@ -180,12 +180,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Color theme saved'),
-      duration: Duration(seconds: 2),
-    ),
-  );
 
     Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pop();
