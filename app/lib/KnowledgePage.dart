@@ -24,6 +24,19 @@ class KnowledgePage extends StatelessWidget {
                 Icon(Icons.cloud),  // 添加左侧图标
                 SizedBox(width: 10),
                 Text('Net Zero'),  // 添加右侧文字
+                ],
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => launch('https://www.un.org/en/climatechange/raising-ambition/renewable-energy'),  // 添加Renewable Energy网址链接
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.flash_on),  // 为Renewable Energy选择合适的图标
+                SizedBox(width: 10),
+                Text('Renewable Energy'),
               ],
             ),
           ),
