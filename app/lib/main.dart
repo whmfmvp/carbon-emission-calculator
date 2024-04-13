@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ColorThemePage.dart';
 import 'theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'KnowledgePage.dart';
+
 
 
 void main() async {
@@ -44,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _widgetOptions = [
     Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Knowledge', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    KnowledgePage(),
     Settings(),
   ];
 
