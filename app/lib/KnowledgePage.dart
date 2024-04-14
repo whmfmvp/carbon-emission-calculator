@@ -37,6 +37,19 @@ class KnowledgePage extends StatelessWidget {
                 Icon(Icons.flash_on),  // 为Renewable Energy选择合适的图标
                 SizedBox(width: 10),
                 Text('Renewable Energy'),
+                ],
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => launch('https://www.un.org/en/climatechange/17-goals-to-transform-our-world'),  // 添加Sustainable Development Goals网址链接
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.public),  // 选择与Sustainable Development Goals相关的图标
+                SizedBox(width: 10),
+                Text('Sustainable Development Goals'), 
               ],
             ),
           ),
