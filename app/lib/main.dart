@@ -5,8 +5,6 @@ import 'theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'KnowledgePage.dart';
 import 'UserProfilePage.dart';
-import 'data_manager.dart';
-
 
 
 void main() async {
@@ -45,19 +43,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
-FutureBuilder(
-      future: loadYourData(),  // 调用加载数据的函数
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text("Error: ${snapshot.error}");
-          }
-          return Text("Data Loaded: ${snapshot.data}");  // 显示加载的数据
-        } else {
-          return CircularProgressIndicator();  // 数据加载时显示加载指示器
-        }
-      },
-    ),    Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     KnowledgePage(),
     Settings(),
   ];
