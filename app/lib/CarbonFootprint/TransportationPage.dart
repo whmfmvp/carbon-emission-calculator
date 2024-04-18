@@ -11,26 +11,27 @@ class TransportationPage extends StatefulWidget {
 }
 
 class _TransportationPageState extends State<TransportationPage> {
-  late TextEditingController _controller1;
-  late TextEditingController _controller2;
-  late TextEditingController _controller3;
+  late TextEditingController _controller4;
+  late TextEditingController _controller5;
+  late TextEditingController _controller6;
   late SharedPreferences _prefs;
+  String carbonFootprintResult = "";  // To display carbon footprint calculation results.
 
   @override
   void initState() {
     super.initState();
-    _controller1 = TextEditingController();
-    _controller2 = TextEditingController();
-    _controller3 = TextEditingController();
+    _controller4 = TextEditingController();
+    _controller5 = TextEditingController();
+    _controller6 = TextEditingController();
     _loadSavedData();
   }
 
   _loadSavedData() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      _controller1.text = _prefs.getString('${widget.category}_q1') ?? '';
-      _controller2.text = _prefs.getString('${widget.category}_q2') ?? '';
-      _controller3.text = _prefs.getString('${widget.category}_q3') ?? '';
+      _controller4.text = _prefs.getString('${widget.category}_q4') ?? '';
+      _controller5.text = _prefs.getString('${widget.category}_q5') ?? '';
+      _controller6.text = _prefs.getString('${widget.category}_q6') ?? '';
     });
   }
 
@@ -40,41 +41,77 @@ class _TransportationPageState extends State<TransportationPage> {
 
   @override
   void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
+    _controller4.dispose();
+    _controller5.dispose();
+    _controller6.dispose();
     super.dispose();
   }
 
+  void calculateCarbonFootprint() {
+    double q4 = double.tryParse(_controller4.text) ?? 0;
+    double q5 = double.tryParse(_controller5.text) ?? 0;
+    double q6 = double.tryParse(_controller6.text) ?? 0;
+    double result = (q4 * 0.1) + (q5 * 45.72) + (q6 * 3.5);
+    String formattedResult = result.toStringAsFixed(2);
+
+  setState(() {
+    carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
+  });
+  }
+
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
+  return SingleChildScrollView(
+    child: Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          buildQuestion("How many plastic bags did you use?", _controller4),
+          buildQuestion("How many sets of disposable tableware did you use?", _controller5),
+          buildQuestion("How many grams of paper products did you use?", _controller6),
+          SizedBox(height: 30),
+          // Button for last page
+          buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
+          SizedBox(height: 10), // Space between the button
+
+          if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
+          SizedBox(height: 20),
+        ],
+      ),
+    ),
+  );
+}
+
+
+  Widget buildQuestion(String question, TextEditingController controller) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Question 1'),
+        Text(question, style: TextStyle(fontSize: 16)),
+        SizedBox(height: 8),
         TextField(
-          controller: _controller1,
+          controller: controller,
           keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q1', value);
-          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Enter your answer here'
+          ),
         ),
-        Text('Question 2'),
-        TextField(
-          controller: _controller2,
-          keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q2', value);
-          },
-        ),
-        Text('Question 3'),
-        TextField(
-          controller: _controller3,
-          keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q3', value);
-          },
-        ),
+        SizedBox(height: 20), // Adds space between questions
       ],
+    );
+  }
+
+  Widget buildButton(String text, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        primary: color,
+        shape: StadiumBorder(),  // Rounded edges
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+      ),
     );
   }
 }

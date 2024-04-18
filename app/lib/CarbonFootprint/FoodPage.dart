@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/CarbonFootprint/HousingPage.dart';
+import 'package:flutter_application_1/CarbonFootprint/UsagePage.dart';
 import 'package:flutter_application_1/UserProfilePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -111,7 +111,7 @@ class _FoodPageState extends State<FoodPage> {
           onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HousingPage(category: '',)),
+            MaterialPageRoute(builder: (context) => UsagePage(category: '',)),
           );
         },
           style: ElevatedButton.styleFrom(

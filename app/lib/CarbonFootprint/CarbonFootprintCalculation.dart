@@ -53,7 +53,7 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
           ClothingPage(category: 'Clothing'),
           FoodPage(category: 'Food',),
           HousingPage(category: 'Housing'),
-          TransportationPage(category: 'Transportation'),
+          TransportationPage(category: 'Transportation',),
           UsagePage(category: 'Usage'),
         ],
       ),
