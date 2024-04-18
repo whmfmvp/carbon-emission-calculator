@@ -108,7 +108,7 @@ Widget build(BuildContext context) {
       onPressed: onPressed,
       child: Text(text),
       style: ElevatedButton.styleFrom(
-        primary: color,
+        backgroundColor: color,
         shape: StadiumBorder(),  // Rounded edges
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
       ),

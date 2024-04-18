@@ -86,7 +86,7 @@ Widget build(BuildContext context) {
               // Navigate to the last page or tab
             },
             style: ElevatedButton.styleFrom(
-              primary: Colors.grey, // Button color
+              backgroundColor: Colors.grey, // Button color
               shape: StadiumBorder(), // Rounded edges
             ),
           ),
@@ -99,7 +99,7 @@ Widget build(BuildContext context) {
   );
 },
             style: ElevatedButton.styleFrom(
-              primary: Colors.green, // Button color
+              backgroundColor: Colors.green, // Button color
               shape: StadiumBorder(), // Rounded edges
             ),
           ),

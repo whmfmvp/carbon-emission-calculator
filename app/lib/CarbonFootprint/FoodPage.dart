@@ -102,7 +102,7 @@ class _FoodPageState extends State<FoodPage> {
           );
         },
           style: ElevatedButton.styleFrom(
-            primary: Colors.grey,
+            backgroundColor: Colors.grey,
             shape: StadiumBorder(),
           ),
         ),
@@ -115,7 +115,7 @@ class _FoodPageState extends State<FoodPage> {
           );
         },
           style: ElevatedButton.styleFrom(
-            primary: Colors.green,
+            backgroundColor: Colors.green,
             shape: StadiumBorder(),
           ),
         ),
