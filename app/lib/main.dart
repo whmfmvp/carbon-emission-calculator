@@ -5,6 +5,7 @@ import 'theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'KnowledgePage.dart';
 import 'UserProfilePage.dart';
+import 'CarbonFootprint/CarbonFootprintCalculation.dart';
 
 
 void main() async {
@@ -43,7 +44,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
-    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    TopTabsExample(),
     Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     KnowledgePage(),
     Settings(),
