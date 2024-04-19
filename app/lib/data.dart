@@ -122,10 +122,3 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    title: 'Carbon Intensity App',
-    home: CarbonIntensityPage(),
-  ));
-}

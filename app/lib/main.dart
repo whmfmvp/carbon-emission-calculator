@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'KnowledgePage.dart';
 import 'UserProfilePage.dart';
 import 'CarbonFootprint/CarbonFootprintCalculation.dart';
+import 'data.dart';
 
 
 void main() async {
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
     TopTabsExample(),
-    Text('Data', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    CarbonIntensityPage(),
     KnowledgePage(),
     Settings(),
   ];
