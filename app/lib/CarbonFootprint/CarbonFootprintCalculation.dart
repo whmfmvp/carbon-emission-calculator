@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'ClothingPage.dart';
 import 'FoodPage.dart';
 import 'HousingPage.dart';
-import 'TransportationPage.dart';
-import 'UsagePage.dart';
+import 'test1.dart';
+import 'test2.dart';
 
 
 class TopTabsExample extends StatefulWidget {
@@ -53,8 +53,8 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
           ClothingPage(category: 'Clothing'),
           FoodPage(category: 'Food',),
           HousingPage(category: 'Housing'),
-          TransportationPage(category: 'Transportation',),
-          UsagePage(category: 'Usage'),
+          TransportationPage(),
+          UsagePage(),
         ],
       ),
     );
