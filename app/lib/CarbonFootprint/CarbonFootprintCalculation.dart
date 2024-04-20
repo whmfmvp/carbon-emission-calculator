@@ -5,7 +5,6 @@ import 'ClothingPage.dart';
 import 'FoodPage.dart';
 import 'HousingPage.dart';
 import 'UsagePage.dart';
-import 'data_provider.dart'; // Import the DataProvider
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TopTabsExample extends StatefulWidget {

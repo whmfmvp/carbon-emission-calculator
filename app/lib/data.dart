@@ -29,6 +29,7 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
   final CarbonIntensityService _carbonIntensityService = CarbonIntensityService();
   List<int> _forecastValues = [];
   List<String> _forecastTimes = [];
+  List<dynamic> _carbonIntensityData = [];
   bool _isLoading = false;
 
   @override
@@ -51,9 +52,9 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
       Map<String, dynamic> carbonIntensityData = await _carbonIntensityService.fetchCarbonIntensityData(formattedDate);
 
       // 提取所有 forecast 字段的值和时间
-      List<dynamic> data = carbonIntensityData['data'];
-      _forecastValues = data.map<int>((entry) => entry['intensity']['forecast']).toList();
-      _forecastTimes = data.map<String>((entry) => entry['from']).toList();
+      _carbonIntensityData = carbonIntensityData['data'];
+      _forecastValues = _carbonIntensityData.map<int>((entry) => entry['intensity']['forecast']).toList();
+      _forecastTimes = _carbonIntensityData.map<String>((entry) => entry['from']).toList();
     } catch (e) {
       print('Error fetching data: $e');
     }
@@ -72,49 +73,101 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _forecastValues.isNotEmpty
-              ? LineChart(
-                  LineChartData(
-                    titlesData: FlTitlesData(
-                      bottomTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 22,
-                        getTextStyles: (value) => const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-                        margin: 10,
-                        getTitles: (value) {
-                          return _forecastTimes[value.toInt()];
-                        },
-                      ),
-                      leftTitles: SideTitles(
-                        showTitles: true,
-                        getTextStyles: (value) => const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-                        margin: 10,
-                        reservedSize: 40,
-                        getTitles: (value) {
-                          // 如果当前值除以 5 的余数为 0，则显示刻度，否则不显示
-                          if (value % 5 == 0) {
-                            return value.toInt().toString();
-                          } else {
-                            return '';
-                          }
-                        },
+              ? Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Container(
+                            width: _forecastValues.length * 100.0, // 设置图表宽度
+                            child: LineChart(
+                              LineChartData(
+                                titlesData: FlTitlesData(
+                                  bottomTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 22,
+                                    getTextStyles: (value) => const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+                                    margin: 10,
+                                    getTitles: (value) {
+                                      int index = value.toInt();
+                                      if (index >= 0 && index < _forecastTimes.length) {
+                                        // 解析时间
+                                        DateTime time = DateTime.parse(_forecastTimes[index]);
+
+                                        // 如果时间的分钟部分为零，则显示整点时间
+                                        if (time.minute == 0) {
+                                          return DateFormat('HH:mm').format(time);
+                                        } else {
+                                          return '';
+                                        }
+                                      } else {
+                                        return '';
+                                      }
+                                    },
+                                  ),
+                                  leftTitles: SideTitles(
+                                    showTitles: true,
+                                    getTextStyles: (value) => const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+                                    margin: 10,
+                                    reservedSize: 40,
+                                    getTitles: (value) {
+                                      // 如果当前值除以 5 的余数为 0，则显示刻度，否则不显示
+                                      if (value % 5 == 0) {
+                                        return value.toInt().toString();
+                                      } else {
+                                        return '';
+                                      }
+                                    },
+                                  ),
+                                ),
+                                borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
+                                minX: 0,
+                                maxX: _forecastValues.length.toDouble() - 1,
+                                minY: _forecastValues.reduce((min, value) => min < value ? min : value).toDouble(),
+                                maxY: _forecastValues.reduce((max, value) => max > value ? max : value).toDouble(),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    spots: _forecastValues.asMap().entries.map((entry) => FlSpot(entry.key.toDouble(), entry.value.toDouble())).toList(),
+                                    isCurved: true,
+                                    colors: [Colors.blue],
+                                    barWidth: 5,
+                                    isStrokeCapRound: true,
+                                    dotData: FlDotData(show: false),
+                                    // 为每个点添加一个透明的背景色，颜色根据 Index 的值来确定
+                                    belowBarData: BarAreaData(
+                                      show: true,
+                                      colors: _carbonIntensityData.map<Color>((data) {
+                                        dynamic indexData = data['Index'];
+
+                                        // 如果 Index 数据不存在或者类型不是字符串，将背景颜色设置为透明
+                                        if (indexData == null || indexData is! String) {
+                                          return Colors.transparent;
+                                        }
+
+                                        String index = indexData;
+
+                                        // 根据 Index 的值返回相应的颜色
+                                        if (index == 'low') {
+                                          return Colors.green.withOpacity(0.3);
+                                        } else if (index == 'moderate') {
+                                          return Colors.orange.withOpacity(0.3);
+                                        } else if (index == 'high') {
+                                          return Colors.red.withOpacity(0.3);
+                                        }
+
+                                        return Colors.transparent;
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
-                    minX: 0,
-                    maxX: _forecastValues.length.toDouble() - 1,
-                    minY: _forecastValues.reduce((min, value) => min < value ? min : value).toDouble(),
-                    maxY: _forecastValues.reduce((max, value) => max > value ? max : value).toDouble(),
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: _forecastValues.asMap().entries.map((entry) => FlSpot(entry.key.toDouble(), entry.value.toDouble())).toList(),
-                        isCurved: true,
-                        colors: [Colors.blue],
-                        barWidth: 5,
-                        isStrokeCapRound: true,
-                        dotData: FlDotData(show: false),
-                      ),
-                    ],
-                  ),
+                  ],
                 )
               : Center(
                   child: Text('Failed to fetch data.'),

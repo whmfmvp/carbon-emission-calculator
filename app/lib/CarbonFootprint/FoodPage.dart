@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'data_provider.dart';
 
 class FoodPage extends StatefulWidget {
   final TextEditingController controller7;
