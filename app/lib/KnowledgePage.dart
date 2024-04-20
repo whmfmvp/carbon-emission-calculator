@@ -21,10 +21,10 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.cloud),  // 添加左侧图标
+                Image.asset('assets/images/net_zero.jpg', width: 24, height: 24),  // 使用图片替换Icon
                 SizedBox(width: 10),
                 Text('Net Zero'),  // 添加右侧文字
-                ],
+              ],
             ),
           ),
         ),
@@ -34,10 +34,10 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.flash_on),  // 为Renewable Energy选择合适的图标
+                Image.asset('assets/images/renewable_energy.jpg', width: 24, height: 24),  // 使用图片替换Icon
                 SizedBox(width: 10),
                 Text('Renewable Energy'),
-                ],
+              ],
             ),
           ),
         ),
@@ -47,7 +47,7 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.public),  // 选择与Sustainable Development Goals相关的图标
+                Image.asset('assets/images/SDGs.jpg', width: 24, height: 24),  // 使用图片替换Icon
                 SizedBox(width: 10),
                 Text('Sustainable Development Goals'), 
               ],
