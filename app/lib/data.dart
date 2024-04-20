@@ -7,7 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 class CarbonIntensityService {
   Future<Map<String, dynamic>> fetchCarbonIntensityData(String from) async {
     String apiUrl = 'https://api.carbonintensity.org.uk/intensity/$from/fw24h';
-  
+
     final response = await http.get(Uri.parse(apiUrl), headers: {
       'Accept': 'application/json',
     });
@@ -68,7 +68,7 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carbon Intensity Data'),
+        title: Text('Carbon Intensity within the next 24h'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -134,31 +134,15 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
                                     barWidth: 5,
                                     isStrokeCapRound: true,
                                     dotData: FlDotData(show: false),
-                                    // 为每个点添加一个透明的背景色，颜色根据 Index 的值来确定
-                                    belowBarData: BarAreaData(
-                                      show: true,
-                                      colors: _carbonIntensityData.map<Color>((data) {
-                                        dynamic indexData = data['Index'];
-
-                                        // 如果 Index 数据不存在或者类型不是字符串，将背景颜色设置为透明
-                                        if (indexData == null || indexData is! String) {
-                                          return Colors.transparent;
-                                        }
-
-                                        String index = indexData;
-
-                                        // 根据 Index 的值返回相应的颜色
-                                        if (index == 'low') {
-                                          return Colors.green.withOpacity(0.3);
-                                        } else if (index == 'moderate') {
-                                          return Colors.orange.withOpacity(0.3);
-                                        } else if (index == 'high') {
-                                          return Colors.red.withOpacity(0.3);
-                                        }
-
-                                        return Colors.transparent;
-                                      }).toList(),
-                                    ),
+                                    belowBarData: BarAreaData(show: true, colors: [
+                                      for (var forecast in _forecastValues)
+                                        if (forecast < 100)
+                                          Colors.green.withOpacity(0.3)
+                                        else if (forecast >= 100 && forecast <= 200)
+                                          Colors.yellow.withOpacity(0.3)
+                                        else
+                                          Colors.red.withOpacity(0.3)
+                                    ]),
                                   ),
                                 ],
                               ),
