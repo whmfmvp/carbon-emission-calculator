@@ -1,125 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/CarbonFootprint/UsagePage.dart';
-import 'package:flutter_application_1/UserProfilePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'data_provider.dart';
 
 class FoodPage extends StatefulWidget {
-  final String category;
+  final TextEditingController controller7;
+  final TextEditingController controller8;
+  final TextEditingController controller9;
 
-  FoodPage({Key? key, required this.category}) : super(key: key);
+  FoodPage({Key? key, required this.controller7, required this.controller8, required this.controller9}) : super(key: key);
 
   @override
   _FoodPageState createState() => _FoodPageState();
 }
 
+
 class _FoodPageState extends State<FoodPage> {
-  late TextEditingController _controller1;
-  late TextEditingController _controller2;
-  late TextEditingController _controller3;
-  Future<SharedPreferences>? _prefsFuture;
+  late TextEditingController _controller7;
+  late TextEditingController _controller8;
+  late TextEditingController _controller9;
+  late SharedPreferences _prefs;
+  bool _prefsInitialized = false;
+  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
 
   @override
   void initState() {
     super.initState();
-    _controller1 = TextEditingController();
-    _controller2 = TextEditingController();
-    _controller3 = TextEditingController();
-    _prefsFuture = SharedPreferences.getInstance();
+    _controller7 = TextEditingController();
+    _controller8 = TextEditingController();
+    _controller9 = TextEditingController();
+    _initializePrefs();
+  }
+
+  _initializePrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _prefsInitialized = true;
+    });
+  }
+
+  _loadSavedData() {
+    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    setState(() {
+      _controller7.text = _prefs.getString('Housing_q7') ?? '';
+      _controller8.text = _prefs.getString('Housing_q8') ?? '';
+      _controller9.text = _prefs.getString('Housing_q9') ?? '';
+    });
+  }
+
+  _saveData(String key, String value) {
+    _prefs.setString(key, value);
   }
 
   @override
   void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
+    _controller7.dispose();
+    _controller8.dispose();
+    _controller9.dispose();
     super.dispose();
+  }
+
+  void calculateCarbonFootprint() {
+    double q7 = double.tryParse(_controller7.text) ?? 0;
+    double q8 = double.tryParse(_controller8.text) ?? 0;
+    double q9 = double.tryParse(_controller9.text) ?? 0;
+    double result = (q7 * 2) + (q8 * 36.4) + (q9 * 220);
+    String formattedResult = result.toStringAsFixed(2);
+
+    setState(() {
+      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SharedPreferences>(
-      future: _prefsFuture,
-      builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          final prefs = snapshot.data!;
-          _controller1.text = prefs.getString('${widget.category}_q1') ?? '';
-          _controller2.text = prefs.getString('${widget.category}_q2') ?? '';
-          _controller3.text = prefs.getString('${widget.category}_q3') ?? '';
-
-          return buildPage(context);
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
-
-  Widget buildPage(BuildContext context) {
+    _loadSavedData(); // Call loadSavedData here
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            buildQuestionField('Question 1', _controller1),
-            buildQuestionField('Question 2', _controller2),
-            buildQuestionField('Question 3', _controller3),
-            navigationButtons(context),
+            buildQuestion("How many grams of food did you eat today?", _controller7, 'Housing_q7'),
+            buildQuestion("How many grams of meat did you eat today?", _controller8, 'Housing_q8'),
+            buildQuestion("How many bottles of beer did you drink today?", _controller9, 'Housing_q9'),
+            SizedBox(height: 30),
+            // Button for last page
+            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
+            SizedBox(height: 10), // Space between the buttons
+            // Button to calculate the carbon footprint
+            buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
+            if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
+            SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget buildQuestionField(String label, TextEditingController controller) {
+  Widget buildQuestion(String question, TextEditingController controller, String prefsKey) {
     return Column(
-      children: [
-        Text(label),
-        SizedBox(height: 10),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(question, style: TextStyle(fontSize: 16)),
+        SizedBox(height: 8),
         TextField(
           controller: controller,
           keyboardType: TextInputType.number,
-          onSubmitted: (value) => _prefsFuture!.then((prefs) {
-            prefs.setString('${widget.category}_${label.replaceAll(' ', '').toLowerCase()}', value);
-          }),
+          onChanged: (value) => _saveData(prefsKey, value),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 20), // Adds space between questions
       ],
     );
   }
 
-  Widget navigationButtons(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-          child: Text('Last Page'),
-          onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserProfilePage()),
-          );
-        },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey,
-            shape: StadiumBorder(),
-          ),
-        ),
-        ElevatedButton(
-          child: Text('Next Page'),
-          onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UsagePage(category: '',)),
-          );
-        },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: StadiumBorder(),
-          ),
-        ),
-      ],
+  Widget buildButton(String text, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: StadiumBorder(), // Rounded edges
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+      ),
     );
   }
 }

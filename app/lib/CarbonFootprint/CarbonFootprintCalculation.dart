@@ -1,10 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/CarbonFootprint/TransportationPage.dart';
 import 'ClothingPage.dart';
 import 'FoodPage.dart';
 import 'HousingPage.dart';
-import 'TransportationPage.dart';
 import 'UsagePage.dart';
-
+import 'data_provider.dart'; // Import the DataProvider
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TopTabsExample extends StatefulWidget {
   @override
@@ -14,15 +16,47 @@ class TopTabsExample extends StatefulWidget {
 class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  // Define controllers for TransportationPage
+  late TextEditingController _controller1;
+  late TextEditingController _controller2;
+  late TextEditingController _controller3;
+  late TextEditingController _controller4;
+  late TextEditingController _controller5;
+  late TextEditingController _controller6;
+  late TextEditingController _controller7;
+  late TextEditingController _controller8;
+  late TextEditingController _controller9;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
+
+    // Initialize controllers for TransportationPage
+    _controller1 = TextEditingController();
+    _controller2 = TextEditingController();
+    _controller3 = TextEditingController();
+    _controller4 = TextEditingController();
+    _controller5 = TextEditingController();
+    _controller6 = TextEditingController();
+    _controller7 = TextEditingController();
+    _controller8 = TextEditingController();
+    _controller9 = TextEditingController();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    // Dispose controllers for TransportationPage
+    _controller1.dispose();
+    _controller2.dispose();
+    _controller3.dispose();
+    _controller4.dispose();
+    _controller5.dispose();
+    _controller6.dispose();
+    _controller7.dispose();
+    _controller8.dispose();
+    _controller9.dispose();
     super.dispose();
   }
 
@@ -50,11 +84,11 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
       body: TabBarView(
         controller: _tabController,
         children: [
-          ClothingPage(category: 'Clothing'),
-          FoodPage(category: 'Food',),
-          HousingPage(category: 'Housing'),
-          TransportationPage(category: 'Transportation'),
-          UsagePage(category: 'Usage'),
+          ClothingPage(controller7: _controller7, controller8: _controller8, controller9: _controller9),
+          FoodPage(controller7: _controller7, controller8: _controller8, controller9: _controller9),
+          HousingPage(controller7: _controller7, controller8: _controller8, controller9: _controller9),
+          TransportationPage(controller4: _controller4, controller5: _controller5, controller6: _controller6),
+          UsagePage(controller4: _controller1, controller5: _controller2, controller6: _controller3),
         ],
       ),
     );

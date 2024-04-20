@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data_provider.dart';
 
 class HousingPage extends StatefulWidget {
-  final String category;
+  final TextEditingController controller7;
+  final TextEditingController controller8;
+  final TextEditingController controller9;
 
-  HousingPage({Key? key, required this.category}) : super(key: key);
+  HousingPage({Key? key, required this.controller7, required this.controller8, required this.controller9}) : super(key: key);
 
   @override
   _HousingPageState createState() => _HousingPageState();
 }
 
+
 class _HousingPageState extends State<HousingPage> {
-  late TextEditingController _controller1;
-  late TextEditingController _controller2;
-  late TextEditingController _controller3;
+  late TextEditingController _controller7;
+  late TextEditingController _controller8;
+  late TextEditingController _controller9;
   late SharedPreferences _prefs;
+  bool _prefsInitialized = false;
+  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
 
   @override
   void initState() {
     super.initState();
-    _controller1 = TextEditingController();
-    _controller2 = TextEditingController();
-    _controller3 = TextEditingController();
-    _loadSavedData();
+    _controller7 = TextEditingController();
+    _controller8 = TextEditingController();
+    _controller9 = TextEditingController();
+    _initializePrefs();
   }
 
-  _loadSavedData() async {
+  _initializePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      _controller1.text = _prefs.getString('${widget.category}_q1') ?? '';
-      _controller2.text = _prefs.getString('${widget.category}_q2') ?? '';
-      _controller3.text = _prefs.getString('${widget.category}_q3') ?? '';
+      _prefsInitialized = true;
+    });
+  }
+
+  _loadSavedData() {
+    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    setState(() {
+      _controller7.text = _prefs.getString('Housing_q7') ?? '';
+      _controller8.text = _prefs.getString('Housing_q8') ?? '';
+      _controller9.text = _prefs.getString('Housing_q9') ?? '';
     });
   }
 
@@ -40,41 +53,77 @@ class _HousingPageState extends State<HousingPage> {
 
   @override
   void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
+    _controller7.dispose();
+    _controller8.dispose();
+    _controller9.dispose();
     super.dispose();
+  }
+
+  void calculateCarbonFootprint() {
+    double q7 = double.tryParse(_controller7.text) ?? 0;
+    double q8 = double.tryParse(_controller8.text) ?? 0;
+    double q9 = double.tryParse(_controller9.text) ?? 0;
+    double result = (q7 * 570.3) + (q8 * 0.91) + (q9 * 190);
+    String formattedResult = result.toStringAsFixed(2);
+
+    setState(() {
+      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _loadSavedData(); // Call loadSavedData here
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            buildQuestion("How many kilowatts of electricity did you use today?", _controller7, 'Housing_q7'),
+            buildQuestion("How many kilograms of water did you use today?", _controller8, 'Housing_q8'),
+            buildQuestion("How many cubic meters of natural gas did you use today?", _controller9, 'Housing_q9'),
+            SizedBox(height: 30),
+            // Button for last page
+            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
+            SizedBox(height: 10), // Space between the buttons
+            // Button to calculate the carbon footprint
+            buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
+            if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildQuestion(String question, TextEditingController controller, String prefsKey) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Question 1'),
+        Text(question, style: TextStyle(fontSize: 16)),
+        SizedBox(height: 8),
         TextField(
-          controller: _controller1,
+          controller: controller,
           keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q1', value);
-          },
+          onChanged: (value) => _saveData(prefsKey, value),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
-        Text('Question 2'),
-        TextField(
-          controller: _controller2,
-          keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q2', value);
-          },
-        ),
-        Text('Question 3'),
-        TextField(
-          controller: _controller3,
-          keyboardType: TextInputType.number,
-          onSubmitted: (value) {
-            _saveData('${widget.category}_q3', value);
-          },
-        ),
+        SizedBox(height: 20), // Adds space between questions
       ],
+    );
+  }
+
+  Widget buildButton(String text, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: StadiumBorder(), // Rounded edges
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+      ),
     );
   }
 }

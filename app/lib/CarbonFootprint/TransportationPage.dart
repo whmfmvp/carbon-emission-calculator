@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data_provider.dart';
 
 class TransportationPage extends StatefulWidget {
-  final String category;
+  final TextEditingController controller4;
+  final TextEditingController controller5;
+  final TextEditingController controller6;
 
-  TransportationPage({Key? key, required this.category}) : super(key: key);
+  TransportationPage({Key? key, required this.controller4, required this.controller5, required this.controller6}) : super(key: key);
 
   @override
   _TransportationPageState createState() => _TransportationPageState();
 }
+
 
 class _TransportationPageState extends State<TransportationPage> {
   late TextEditingController _controller4;
   late TextEditingController _controller5;
   late TextEditingController _controller6;
   late SharedPreferences _prefs;
-  String carbonFootprintResult = "";  // To display carbon footprint calculation results.
+  bool _prefsInitialized = false;
+  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
 
   @override
   void initState() {
@@ -23,15 +28,22 @@ class _TransportationPageState extends State<TransportationPage> {
     _controller4 = TextEditingController();
     _controller5 = TextEditingController();
     _controller6 = TextEditingController();
-    _loadSavedData();
+    _initializePrefs();
   }
 
-  _loadSavedData() async {
+  _initializePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      _controller4.text = _prefs.getString('${widget.category}_q4') ?? '';
-      _controller5.text = _prefs.getString('${widget.category}_q5') ?? '';
-      _controller6.text = _prefs.getString('${widget.category}_q6') ?? '';
+      _prefsInitialized = true;
+    });
+  }
+
+  _loadSavedData() {
+    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    setState(() {
+      _controller4.text = _prefs.getString('transportation_q4') ?? '';
+      _controller5.text = _prefs.getString('transportation_q5') ?? '';
+      _controller6.text = _prefs.getString('transportation_q6') ?? '';
     });
   }
 
@@ -51,40 +63,41 @@ class _TransportationPageState extends State<TransportationPage> {
     double q4 = double.tryParse(_controller4.text) ?? 0;
     double q5 = double.tryParse(_controller5.text) ?? 0;
     double q6 = double.tryParse(_controller6.text) ?? 0;
-    double result = (q4 * 0.1) + (q5 * 45.72) + (q6 * 3.5);
+    double result = (q4 * 36) + (q5 * 69) + (q6 * 270);
     String formattedResult = result.toStringAsFixed(2);
 
-  setState(() {
-    carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
-  });
+    setState(() {
+      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
+    });
   }
 
   @override
-Widget build(BuildContext context) {
-  return SingleChildScrollView(
-    child: Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          buildQuestion("How many plastic bags did you use?", _controller4),
-          buildQuestion("How many sets of disposable tableware did you use?", _controller5),
-          buildQuestion("How many grams of paper products did you use?", _controller6),
-          SizedBox(height: 30),
-          // Button for last page
-          buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
-          SizedBox(height: 10), // Space between the button
-
-          if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
-          SizedBox(height: 20),
-        ],
+  Widget build(BuildContext context) {
+    _loadSavedData(); // Call loadSavedData here
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            buildQuestion("How many kilometers did you travel by subway today?", _controller4, 'transportation_q4'),
+            buildQuestion("How many kilometers did you travel by bus today?", _controller5, 'transportation_q5'),
+            buildQuestion("How many kilometers did you travel by private car today?", _controller6, 'transportation_q6'),
+            SizedBox(height: 30),
+            // Button for last page
+            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
+            SizedBox(height: 10), // Space between the buttons
+            // Button to calculate the carbon footprint
+            buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
+            if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
+            SizedBox(height: 20),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-
-  Widget buildQuestion(String question, TextEditingController controller) {
+  Widget buildQuestion(String question, TextEditingController controller, String prefsKey) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -93,10 +106,9 @@ Widget build(BuildContext context) {
         TextField(
           controller: controller,
           keyboardType: TextInputType.number,
+          onChanged: (value) => _saveData(prefsKey, value),
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your answer here'
-          ),
+              border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
         SizedBox(height: 20), // Adds space between questions
       ],
@@ -109,7 +121,7 @@ Widget build(BuildContext context) {
       child: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        shape: StadiumBorder(),  // Rounded edges
+        shape: StadiumBorder(), // Rounded edges
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
       ),
     );
