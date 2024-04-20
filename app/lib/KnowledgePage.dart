@@ -5,6 +5,7 @@ class KnowledgePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch, // 让每个box占据整个屏幕宽度
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -15,41 +16,53 @@ class KnowledgePage extends StatelessWidget {
             child: Text('About'),
           ),
         ),
+        SizedBox(height: 20), // 增大每个box之间的距离
         InkWell(
           onTap: () => launch('https://www.un.org/en/climatechange/net-zero-coalition'),  // 添加网址链接
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1), // 添加边框
+            ),
+            padding: const EdgeInsets.all(20.0), // 增大每个box的大小
             child: Row(
               children: <Widget>[
-                Image.asset('assets/images/net_zero.jpg', width: 24, height: 24),  // 使用图片替换Icon
-                SizedBox(width: 10),
-                Text('Net Zero'),  // 添加右侧文字
+                Image.asset('assets/images/earth.jpg', width: 48, height: 48),  // 增大图片大小
+                SizedBox(width: 20),
+                Text('Net Zero', style: TextStyle(fontSize: 20)),  // 增大文字大小
               ],
             ),
           ),
         ),
+        SizedBox(height: 20), // 增大每个box之间的距离
         InkWell(
           onTap: () => launch('https://www.un.org/en/climatechange/raising-ambition/renewable-energy'),  // 添加Renewable Energy网址链接
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1), // 添加边框
+            ),
+            padding: const EdgeInsets.all(20.0), // 增大每个box的大小
             child: Row(
               children: <Widget>[
-                Image.asset('assets/images/renewable_energy.jpg', width: 24, height: 24),  // 使用图片替换Icon
-                SizedBox(width: 10),
-                Text('Renewable Energy'),
+                Image.asset('assets/images/earth.jpg', width: 48, height: 48),  // 增大图片大小
+                SizedBox(width: 20),
+                Text('Renewable Energy', style: TextStyle(fontSize: 20)),
               ],
             ),
           ),
         ),
+        SizedBox(height: 20), // 增大每个box之间的距离
         InkWell(
           onTap: () => launch('https://www.un.org/en/climatechange/17-goals-to-transform-our-world'),  // 添加Sustainable Development Goals网址链接
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1), // 添加边框
+            ),
+            padding: const EdgeInsets.all(20.0), // 增大每个box的大小
             child: Row(
               children: <Widget>[
-                Image.asset('assets/images/SDGs.jpg', width: 24, height: 24),  // 使用图片替换Icon
-                SizedBox(width: 10),
-                Text('Sustainable Development Goals'), 
+                Image.asset('assets/images/earth.jpg', width: 48, height: 48),  // 增大图片大小
+                SizedBox(width: 20),
+                Text('Sustainable Development Goals', style: TextStyle(fontSize: 20)), 
               ],
             ),
           ),
