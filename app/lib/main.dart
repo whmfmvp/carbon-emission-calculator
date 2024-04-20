@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'splash_screen.dart';
 import 'ColorThemePage.dart';
@@ -11,6 +8,7 @@ import 'KnowledgePage.dart';
 import 'UserProfilePage.dart';
 import 'CarbonFootprint/CarbonFootprintCalculation.dart';
 import 'data.dart';
+import 'AboutUs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -136,7 +134,7 @@ class _SettingsState extends State<Settings> {
         SizedBox(height: 20),
         SwitchListTile(
           title: Text(
-            'Enable notifications',
+            'Enable Notifications',
             style: TextStyle(fontSize: 20), // 增大字体大小
           ),
           value: _notificationsEnabled,
@@ -151,7 +149,7 @@ class _SettingsState extends State<Settings> {
         SizedBox(height: 20),
         ListTile(
           title: Text(
-            'Clear cache',
+            'Clear Cache',
             style: TextStyle(fontSize: 20), // 增大字体大小
           ),
           leading: Icon(Icons.clear),
@@ -162,7 +160,7 @@ class _SettingsState extends State<Settings> {
         SizedBox(height: 20),
         ListTile(
           title: Text(
-            'Color theme',
+            'Color Theme',
             style: TextStyle(fontSize: 20), // 增大字体大小
           ),
           leading: Icon(Icons.color_lens),
@@ -172,7 +170,19 @@ class _SettingsState extends State<Settings> {
             );
           },
         ),
-        // 添加更多设置项...
+        SizedBox(height: 20),
+        ListTile(
+          title: Text(
+            'About Us',
+            style: TextStyle(fontSize: 20), // 增大字体大小
+          ),
+          leading: Icon(Icons.info),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AboutUs()), // 跳转到AboutUs页面
+            );
+          },
+        ),
       ],
     );
   }
