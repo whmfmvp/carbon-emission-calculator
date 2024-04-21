@@ -44,7 +44,8 @@ class UsagePage extends StatefulWidget {
 class _UsagePageState extends State<UsagePage> {
   late SharedPreferences _prefs;
   bool _prefsInitialized = false;
-  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
+  String carbonFootprintResult = ""; 
+  String OverallcarbonFootprintResult = ""; 
 
   @override
   void initState() {
@@ -103,12 +104,13 @@ class _UsagePageState extends State<UsagePage> {
             buildQuestion("How many sets of disposable tableware did you use?", widget.controller2, 'usage_q2'),
             buildQuestion("How many grams of paper products did you use?", widget.controller3, 'usage_q3'),
             SizedBox(height: 30),
-            // Button for last page
-            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
-            SizedBox(height: 10), // Space between the buttons
             // Button to calculate the carbon footprint
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
+            SizedBox(height: 20),
+            // Button to calculate the Overall carbon footprint
+            buildButton("Calculate Your Overall Carbon Footprint", Colors.green, OverallCarbonFootprint),
+            if (OverallcarbonFootprintResult.isNotEmpty) Text(OverallcarbonFootprintResult),
             SizedBox(height: 20),
           ],
         ),
@@ -146,7 +148,25 @@ class _UsagePageState extends State<UsagePage> {
     );
   }
 
-  void calculateCarbonFootprint() {
+void calculateCarbonFootprint() {
+    double q1 = double.tryParse(widget.controller1.text) ?? 0;
+    double q2 = double.tryParse(widget.controller2.text) ?? 0;
+    double q3 = double.tryParse(widget.controller3.text) ?? 0;
+    double result = (q1 * 0.1) + (q2 * 45.72) + (q3 * 3.5);
+    String formattedResult = result.toStringAsFixed(2);
+    if (result >= 1000) {
+        double kilograms = result / 1000;
+        formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+      } else {
+        formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+      }
+
+      setState(() {
+        carbonFootprintResult = formattedResult;
+      });
+  }
+
+  void OverallCarbonFootprint() {
     double q1 = double.tryParse(widget.controller1.text) ?? 0;
     double q2 = double.tryParse(widget.controller2.text) ?? 0;
     double q3 = double.tryParse(widget.controller3.text) ?? 0;
@@ -180,13 +200,14 @@ class _UsagePageState extends State<UsagePage> {
     String formattedResult;
   if (result >= 1000) {
     double kilograms = result / 1000;
-    formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+    formattedResult = "Your Overall Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
   } else {
-    formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+    formattedResult = "Your Overall Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
   }
 
   setState(() {
-    carbonFootprintResult = formattedResult;
+    OverallcarbonFootprintResult = formattedResult;
   });
 }
 }
+

@@ -64,10 +64,16 @@ class _ClothingPageState extends State<ClothingPage> {
     double q15 = double.tryParse(_controller15.text) ?? 0;
     double result = (q13 * 12000) + (q14 * 260) + (q15 * 0.72);
     String formattedResult = result.toStringAsFixed(2);
+    if (result >= 1000) {
+            double kilograms = result / 1000;
+            formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+          } else {
+            formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+          }
 
-    setState(() {
-      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
-    });
+          setState(() {
+            carbonFootprintResult = formattedResult;
+          });
   }
 
   @override
@@ -83,9 +89,7 @@ class _ClothingPageState extends State<ClothingPage> {
             buildQuestion("How many times do you machine wash clothes today?", _controller14, 'Clothing_q14'),
             buildQuestion("How many grams of laundry detergent (liquid) did you use today?", _controller15, 'Clothing_q15'),
             SizedBox(height: 30),
-            // Button for last page
-            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
-            SizedBox(height: 10), // Space between the buttons
+            
             // Button to calculate the carbon footprint
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),

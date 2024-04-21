@@ -64,10 +64,16 @@ class _FoodPageState extends State<FoodPage> {
     double q12 = double.tryParse(_controller12.text) ?? 0;
     double result = (q10 * 2) + (q11 * 36.4) + (q12 * 220);
     String formattedResult = result.toStringAsFixed(2);
+    if (result >= 1000) {
+            double kilograms = result / 1000;
+            formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+          } else {
+            formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+          }
 
-    setState(() {
-      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
-    });
+          setState(() {
+            carbonFootprintResult = formattedResult;
+          });
   }
 
   @override
@@ -83,9 +89,7 @@ class _FoodPageState extends State<FoodPage> {
             buildQuestion("How many grams of meat did you eat today?", _controller11, 'Food_q11'),
             buildQuestion("How many bottles of beer did you drink today?", _controller12, 'Food_q12'),
             SizedBox(height: 30),
-            // Button for last page
-            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
-            SizedBox(height: 10), // Space between the buttons
+            
             // Button to calculate the carbon footprint
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),

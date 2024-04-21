@@ -64,10 +64,16 @@ class _HousingPageState extends State<HousingPage> {
     double q9 = double.tryParse(_controller9.text) ?? 0;
     double result = (q7 * 570.3) + (q8 * 0.91) + (q9 * 190);
     String formattedResult = result.toStringAsFixed(2);
+    if (result >= 1000) {
+            double kilograms = result / 1000;
+            formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+          } else {
+            formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+          }
 
-    setState(() {
-      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
-    });
+          setState(() {
+            carbonFootprintResult = formattedResult;
+          });
   }
 
   @override
@@ -83,9 +89,7 @@ class _HousingPageState extends State<HousingPage> {
             buildQuestion("How many kilograms of water did you use today?", _controller8, 'Housing_q8'),
             buildQuestion("How many cubic meters of natural gas did you use today?", _controller9, 'Housing_q9'),
             SizedBox(height: 30),
-            // Button for last page
-            buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
-            SizedBox(height: 10), // Space between the buttons
+            
             // Button to calculate the carbon footprint
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
