@@ -14,6 +14,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final themeProvider = ThemeProvider();
   await themeProvider.loadThemeColor();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String usageQ1 = prefs.getString('usage_q1') ?? '';
+  String usageQ2 = prefs.getString('usage_q2') ?? '';
+  String usageQ3 = prefs.getString('usage_q3') ?? '';
+  String transportationQ4 = prefs.getString('transportation_q4') ?? '';
+  String transportationQ5 = prefs.getString('transportation_q5') ?? '';
+  String transportationQ6 = prefs.getString('transportation_q6') ?? '';
+
+  print("usage_q1: $usageQ1");
+  print("usage_q2: $usageQ2");
+  print("usage_q3: $usageQ3");
+  print("transportation_q4: $transportationQ4");
+  print("transportation_q5: $transportationQ5");
+  print("transportation_q6: $transportationQ6");
+
+
 
   runApp(
     ChangeNotifierProvider(

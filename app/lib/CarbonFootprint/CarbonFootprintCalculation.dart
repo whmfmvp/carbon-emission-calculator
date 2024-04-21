@@ -87,7 +87,7 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
           FoodPage(controller7: _controller7, controller8: _controller8, controller9: _controller9),
           HousingPage(controller7: _controller7, controller8: _controller8, controller9: _controller9),
           TransportationPage(controller4: _controller4, controller5: _controller5, controller6: _controller6),
-          UsagePage(controller4: _controller1, controller5: _controller2, controller6: _controller3),
+          UsagePage(controller1: _controller1, controller2: _controller2, controller3: _controller3, controller4: _controller4, controller5: _controller5, controller6: _controller9,),
         ],
       ),
     );

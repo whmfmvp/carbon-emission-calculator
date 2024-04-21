@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class UsagePage extends StatefulWidget {
+  final TextEditingController controller1;
+  final TextEditingController controller2;
+  final TextEditingController controller3;
   final TextEditingController controller4;
   final TextEditingController controller5;
   final TextEditingController controller6;
 
-  UsagePage({Key? key, required this.controller4, required this.controller5, required this.controller6}) : super(key: key);
+  UsagePage({
+    Key? key,
+    required this.controller1,
+    required this.controller2,
+    required this.controller3,
+    required this.controller4,
+    required this.controller5,
+    required this.controller6,
+  }) : super(key: key);
 
   @override
   _UsagePageState createState() => _UsagePageState();
 }
 
 class _UsagePageState extends State<UsagePage> {
-  late TextEditingController _controller1;
-  late TextEditingController _controller2;
-  late TextEditingController _controller3;
   late SharedPreferences _prefs;
   bool _prefsInitialized = false;
   String carbonFootprintResult = ""; // To display carbon footprint calculation results.
@@ -25,9 +31,6 @@ class _UsagePageState extends State<UsagePage> {
   @override
   void initState() {
     super.initState();
-    _controller1 = TextEditingController();
-    _controller2 = TextEditingController();
-    _controller3 = TextEditingController();
     _initializePrefs();
   }
 
@@ -35,15 +38,27 @@ class _UsagePageState extends State<UsagePage> {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
       _prefsInitialized = true;
+      _loadSavedData(); // Call loadSavedData here
     });
   }
 
   _loadSavedData() {
     if (!_prefsInitialized) return; // Check if _prefs has been initialized
     setState(() {
-      _controller1.text = _prefs.getString('usage_q1') ?? '';
-      _controller2.text = _prefs.getString('usage_q2') ?? '';
-      _controller3.text = _prefs.getString('usage_q3') ?? '';
+      widget.controller1.text = _prefs.getString('usage_q1') ?? '';
+      widget.controller2.text = _prefs.getString('usage_q2') ?? '';
+      widget.controller3.text = _prefs.getString('usage_q3') ?? '';
+      widget.controller4.text = _prefs.getString('transportation_q4') ?? '';
+      widget.controller5.text = _prefs.getString('transportation_q5') ?? '';
+      widget.controller6.text = _prefs.getString('transportation_q6') ?? '';
+
+      // Add debug prints to check if values are set correctly
+      print("controller1: ${widget.controller1.text}");
+      print("controller2: ${widget.controller2.text}");
+      print("controller3: ${widget.controller3.text}");
+      print("controller4: ${widget.controller4.text}");
+      print("controller5: ${widget.controller5.text}");
+      print("controller6: ${widget.controller6.text}");
     });
   }
 
@@ -52,45 +67,21 @@ class _UsagePageState extends State<UsagePage> {
   }
 
   @override
-  void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
-    super.dispose();
-  }
-
-  void calculateCarbonFootprint() {
-    double q1 = double.tryParse(_controller1.text) ?? 0;
-    double q2 = double.tryParse(_controller2.text) ?? 0;
-    double q3 = double.tryParse(_controller3.text) ?? 0;
-    double q4 = double.tryParse(widget.controller4.text) ?? 0; // Access controller4, controller5, and controller6 from widget
-    double q5 = double.tryParse(widget.controller5.text) ?? 0;
-    double q6 = double.tryParse(widget.controller6.text) ?? 0;
-    double result = (q1 * 0.1) +
-        (q2 * 45.72) +
-        (q3 * 3.5) +
-        (q4 * 0.1) +
-        (q5 * 45.72) +
-        (q6 * 3.5);
-    String formattedResult = result.toStringAsFixed(2);
-
-    setState(() {
-      carbonFootprintResult = "Your Carbon Footprint is $formattedResult grams!";
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _loadSavedData(); // Call loadSavedData here
+    if (!_prefsInitialized) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            buildQuestion("How many plastic bags did you use?", _controller1, 'usage_q1'),
-            buildQuestion("How many sets of disposable tableware did you use?", _controller2, 'usage_q2'),
-            buildQuestion("How many grams of paper products did you use?", _controller3, 'usage_q3'),
+            buildQuestion("How many plastic bags did you use?", widget.controller1, 'usage_q1'),
+            buildQuestion("How many sets of disposable tableware did you use?", widget.controller2, 'usage_q2'),
+            buildQuestion("How many grams of paper products did you use?", widget.controller3, 'usage_q3'),
             SizedBox(height: 30),
             // Button for last page
             buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),
@@ -134,4 +125,30 @@ class _UsagePageState extends State<UsagePage> {
       ),
     );
   }
+
+  void calculateCarbonFootprint() {
+    double q1 = double.tryParse(widget.controller1.text) ?? 0;
+    double q2 = double.tryParse(widget.controller2.text) ?? 0;
+    double q3 = double.tryParse(widget.controller3.text) ?? 0;
+    double q4 = double.tryParse(widget.controller4.text) ?? 0; // Access controller4, controller5, and controller6 from widget
+    double q5 = double.tryParse(widget.controller5.text) ?? 0;
+    double q6 = double.tryParse(widget.controller6.text) ?? 0;
+    double result = (q1 * 0.1) +
+        (q2 * 45.72) +
+        (q3 * 3.5) +
+        (q4 * 36) +
+        (q5 * 69) +
+        (q6 * 270);
+    String formattedResult;
+  if (result >= 1000) {
+    double kilograms = result / 1000;
+    formattedResult = "Your Carbon Footprint is ${kilograms.toStringAsFixed(2)} kilograms!";
+  } else {
+    formattedResult = "Your Carbon Footprint is ${result.toStringAsFixed(2)} grams!";
+  }
+
+  setState(() {
+    carbonFootprintResult = formattedResult;
+  });
+}
 }

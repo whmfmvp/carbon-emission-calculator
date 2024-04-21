@@ -68,7 +68,7 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carbon Intensity within the next 24h'),
+        title: Text('Carbon Intensity(gCO2/kWh)'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
