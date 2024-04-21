@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClothingPage extends StatefulWidget {
-  final TextEditingController controller7;
-  final TextEditingController controller8;
-  final TextEditingController controller9;
+  final TextEditingController controller13;
+  final TextEditingController controller14;
+  final TextEditingController controller15;
 
-  ClothingPage({Key? key, required this.controller7, required this.controller8, required this.controller9}) : super(key: key);
+  ClothingPage({Key? key, required this.controller13, required this.controller14, required this.controller15}) : super(key: key);
 
   @override
   _ClothingPageState createState() => _ClothingPageState();
@@ -14,9 +14,9 @@ class ClothingPage extends StatefulWidget {
 
 
 class _ClothingPageState extends State<ClothingPage> {
-  late TextEditingController _controller7;
-  late TextEditingController _controller8;
-  late TextEditingController _controller9;
+  late TextEditingController _controller13;
+  late TextEditingController _controller14;
+  late TextEditingController _controller15;
   late SharedPreferences _prefs;
   bool _prefsInitialized = false;
   String carbonFootprintResult = ""; // To display carbon footprint calculation results.
@@ -24,9 +24,9 @@ class _ClothingPageState extends State<ClothingPage> {
   @override
   void initState() {
     super.initState();
-    _controller7 = TextEditingController();
-    _controller8 = TextEditingController();
-    _controller9 = TextEditingController();
+    _controller13 = TextEditingController();
+    _controller14 = TextEditingController();
+    _controller15 = TextEditingController();
     _initializePrefs();
   }
 
@@ -40,9 +40,9 @@ class _ClothingPageState extends State<ClothingPage> {
   _loadSavedData() {
     if (!_prefsInitialized) return; // Check if _prefs has been initialized
     setState(() {
-      _controller7.text = _prefs.getString('Housing_q7') ?? '';
-      _controller8.text = _prefs.getString('Housing_q8') ?? '';
-      _controller9.text = _prefs.getString('Housing_q9') ?? '';
+      _controller13.text = _prefs.getString('Clothing_q13') ?? '';
+      _controller14.text = _prefs.getString('Clothing_q14') ?? '';
+      _controller15.text = _prefs.getString('Clothing_q15') ?? '';
     });
   }
 
@@ -52,17 +52,17 @@ class _ClothingPageState extends State<ClothingPage> {
 
   @override
   void dispose() {
-    _controller7.dispose();
-    _controller8.dispose();
-    _controller9.dispose();
+    _controller13.dispose();
+    _controller14.dispose();
+    _controller15.dispose();
     super.dispose();
   }
 
   void calculateCarbonFootprint() {
-    double q7 = double.tryParse(_controller7.text) ?? 0;
-    double q8 = double.tryParse(_controller8.text) ?? 0;
-    double q9 = double.tryParse(_controller9.text) ?? 0;
-    double result = (q7 * 12000) + (q8 * 260) + (q9 * 0.72);
+    double q13 = double.tryParse(_controller13.text) ?? 0;
+    double q14 = double.tryParse(_controller14.text) ?? 0;
+    double q15 = double.tryParse(_controller15.text) ?? 0;
+    double result = (q13 * 12000) + (q14 * 260) + (q15 * 0.72);
     String formattedResult = result.toStringAsFixed(2);
 
     setState(() {
@@ -79,9 +79,9 @@ class _ClothingPageState extends State<ClothingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            buildQuestion("How many new clothes did you purchase today?", _controller7, 'Housing_q7'),
-            buildQuestion("How many times do you machine wash clothes today?", _controller8, 'Housing_q8'),
-            buildQuestion("How many grams of laundry detergent (liquid) did you use today?", _controller9, 'Housing_q9'),
+            buildQuestion("How many new clothes did you purchase today?", _controller13, 'Clothing_q13'),
+            buildQuestion("How many times do you machine wash clothes today?", _controller14, 'Clothing_q14'),
+            buildQuestion("How many grams of laundry detergent (liquid) did you use today?", _controller15, 'Clothing_q15'),
             SizedBox(height: 30),
             // Button for last page
             buildButton("Last Page", Colors.grey, () => Navigator.pop(context)),

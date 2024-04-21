@@ -62,7 +62,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/earth.jpg
-    - assets/myclimate-calculators.v1.json
+    
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
