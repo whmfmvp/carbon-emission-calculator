@@ -23,7 +23,7 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.cloud),
+               Image.asset('assets/images/net_zero.jpg', width: 48, height: 48),
                 SizedBox(width: 20),
                 Text('Net Zero', style: TextStyle(fontSize: 20)),
               ],
@@ -37,7 +37,7 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.flash_on),
+                Image.asset('assets/images/renewable_energy.jpg', width: 48, height: 48),
                 SizedBox(width: 20),
                 Text('Renewable Energy', style: TextStyle(fontSize: 20)),
               ],
@@ -51,9 +51,9 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.public),
+                Image.asset('assets/images/SDGs.jpg', width: 48, height: 48),
                 SizedBox(width: 20),
-                Text('Sustainable Development Goals', style: TextStyle(fontSize: 20)),
+                Text('Sustainable Development Goals', style: TextStyle(fontSize: 15)),
               ],
             ),
           ),
@@ -65,7 +65,7 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.assignment),
+                Image.asset('assets/images/emission_factor.jpg', width: 48, height: 48),
                 SizedBox(width: 20),
                 Text('Emission Factor (EF)', style: TextStyle(fontSize: 20)),
               ],
@@ -79,7 +79,7 @@ class KnowledgePage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.local_fire_department),
+                Image.asset('assets/images/carbon_intensity.jpg', width: 48, height: 48),
                 SizedBox(width: 20),
                 Text('Carbon Intensity', style: TextStyle(fontSize: 20)),
               ],

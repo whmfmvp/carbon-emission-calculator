@@ -12,7 +12,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   final TextEditingController _birthdateController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  String _userImage = 'assets/images/earth.jpg'; 
+  String _userImage = 'assets/images/default_avatar.png'; 
 
  @override
   void initState() {
