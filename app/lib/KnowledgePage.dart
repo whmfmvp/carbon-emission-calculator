@@ -11,7 +11,7 @@ class KnowledgePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () {
-              // 添加关于页面的逻辑
+              
             },
             child: Text('About'),
           ),

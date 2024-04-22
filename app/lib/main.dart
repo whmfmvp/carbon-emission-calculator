@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       theme: ThemeData(
         primaryColor: themeColor,
-        scaffoldBackgroundColor: themeColor, // 设置背景颜色
+        scaffoldBackgroundColor: themeColor, 
       ),
     );
   }
@@ -103,7 +103,7 @@ class _SettingsState extends State<Settings> {
   bool _notificationsEnabled = false;
 
   void _clearCache() async {
-    // 清除SharedPreferences中的数据
+    
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
@@ -117,12 +117,12 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(vertical: 20.0), // 增加模块之间的垂直间距
+      padding: EdgeInsets.symmetric(vertical: 20.0), 
       children: <Widget>[
         ListTile(
           title: Text(
             'Personal Information',
-            style: TextStyle(fontSize: 20), // 增大字体大小
+            style: TextStyle(fontSize: 20), 
           ),
           leading: Icon(Icons.person),
           onTap: () {
@@ -135,14 +135,14 @@ class _SettingsState extends State<Settings> {
         SwitchListTile(
           title: Text(
             'Enable Notifications',
-            style: TextStyle(fontSize: 20), // 增大字体大小
+            style: TextStyle(fontSize: 20), 
           ),
           value: _notificationsEnabled,
           onChanged: (bool value) {
             setState(() {
               _notificationsEnabled = value;
             });
-            // 这里可以添加其他逻辑，比如保存偏好到本地
+            
           },
           secondary: Icon(Icons.notifications_active),
         ),
@@ -150,7 +150,7 @@ class _SettingsState extends State<Settings> {
         ListTile(
           title: Text(
             'Clear Cache',
-            style: TextStyle(fontSize: 20), // 增大字体大小
+            style: TextStyle(fontSize: 20), 
           ),
           leading: Icon(Icons.clear),
           onTap: () {
@@ -161,7 +161,7 @@ class _SettingsState extends State<Settings> {
         ListTile(
           title: Text(
             'Color Theme',
-            style: TextStyle(fontSize: 20), // 增大字体大小
+            style: TextStyle(fontSize: 20),
           ),
           leading: Icon(Icons.color_lens),
           onTap: () {
@@ -174,12 +174,12 @@ class _SettingsState extends State<Settings> {
         ListTile(
           title: Text(
             'About Us',
-            style: TextStyle(fontSize: 20), // 增大字体大小
+            style: TextStyle(fontSize: 20), 
           ),
           leading: Icon(Icons.info),
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => AboutUs()), // 跳转到AboutUs页面
+              MaterialPageRoute(builder: (context) => AboutUs()), 
             );
           },
         ),

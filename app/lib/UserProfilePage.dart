@@ -64,7 +64,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                // 这里添加更换头像的逻辑
+                
               },
               child: CircleAvatar(
                 backgroundImage: AssetImage(_userImage),
@@ -93,7 +93,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             controller: _phoneController,
             decoration: InputDecoration(labelText: 'Telephone'),
           ),
-          SizedBox(height: 40), // 增加间隔，使按钮下移
+          SizedBox(height: 40), 
           ElevatedButton(
             onPressed: _saveProfile,
             child: Text('Save'),

@@ -14,7 +14,7 @@ class TopTabsExample extends StatefulWidget {
 class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Define controllers for TransportationPage
+
   late TextEditingController _controller1;
   late TextEditingController _controller2;
   late TextEditingController _controller3;
@@ -56,7 +56,7 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
   @override
   void dispose() {
     _tabController.dispose();
-    // Dispose controllers for TransportationPage
+
     _controller1.dispose();
     _controller2.dispose();
     _controller3.dispose();
@@ -78,8 +78,8 @@ class _TopTabsExampleState extends State<TopTabsExample> with SingleTickerProvid
           isScrollable: true,
           indicator: BoxDecoration(
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(25), // Use a high value for circular
-            color: Colors.green, // Tab background color
+            borderRadius: BorderRadius.circular(25), 
+            color: Colors.green, 
           ),
           tabs: [
             Tab(icon: Icon(Icons.checkroom), text: 'Clothing'),

@@ -19,7 +19,7 @@ class _FoodPageState extends State<FoodPage> {
   late TextEditingController _controller12;
   late SharedPreferences _prefs;
   bool _prefsInitialized = false;
-  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
+  String carbonFootprintResult = ""; 
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _FoodPageState extends State<FoodPage> {
   }
 
   _loadSavedData() {
-    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    if (!_prefsInitialized) return; 
     setState(() {
       _controller10.text = _prefs.getString('Food_q10') ?? '';
       _controller11.text = _prefs.getString('Food_q11') ?? '';
@@ -78,7 +78,7 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
-    _loadSavedData(); // Call loadSavedData here
+    _loadSavedData(); 
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -90,7 +90,7 @@ class _FoodPageState extends State<FoodPage> {
             buildQuestion("How many bottles of beer did you drink today?", _controller12, 'Food_q12'),
             SizedBox(height: 30),
             
-            // Button to calculate the carbon footprint
+            
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
             SizedBox(height: 20),
@@ -113,7 +113,7 @@ class _FoodPageState extends State<FoodPage> {
           decoration: InputDecoration(
               border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
-        SizedBox(height: 20), // Adds space between questions
+        SizedBox(height: 20), 
       ],
     );
   }
@@ -124,8 +124,8 @@ class _FoodPageState extends State<FoodPage> {
       child: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        shape: StadiumBorder(), // Rounded edges
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+        shape: StadiumBorder(), 
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
       ),
     );
   }

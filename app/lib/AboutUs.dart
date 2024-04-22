@@ -63,7 +63,7 @@ class _AboutUsState extends State<AboutUs> {
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
-            Expanded(child: Container()), // 使用Expanded将版本信息推到页面底部
+            Expanded(child: Container()), 
             Text(
               'Author: Haoming Wang (Axe)',
               style: TextStyle(fontSize: 14),

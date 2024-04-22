@@ -19,7 +19,7 @@ class _ClothingPageState extends State<ClothingPage> {
   late TextEditingController _controller15;
   late SharedPreferences _prefs;
   bool _prefsInitialized = false;
-  String carbonFootprintResult = ""; // To display carbon footprint calculation results.
+  String carbonFootprintResult = ""; 
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _ClothingPageState extends State<ClothingPage> {
   }
 
   _loadSavedData() {
-    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    if (!_prefsInitialized) return; 
     setState(() {
       _controller13.text = _prefs.getString('Clothing_q13') ?? '';
       _controller14.text = _prefs.getString('Clothing_q14') ?? '';
@@ -78,7 +78,7 @@ class _ClothingPageState extends State<ClothingPage> {
 
   @override
   Widget build(BuildContext context) {
-    _loadSavedData(); // Call loadSavedData here
+    _loadSavedData(); 
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -90,7 +90,7 @@ class _ClothingPageState extends State<ClothingPage> {
             buildQuestion("How many grams of laundry detergent (liquid) did you use today?", _controller15, 'Clothing_q15'),
             SizedBox(height: 30),
             
-            // Button to calculate the carbon footprint
+            
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
             SizedBox(height: 20),
@@ -113,7 +113,7 @@ class _ClothingPageState extends State<ClothingPage> {
           decoration: InputDecoration(
               border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
-        SizedBox(height: 20), // Adds space between questions
+        SizedBox(height: 20), 
       ],
     );
   }
@@ -124,8 +124,8 @@ class _ClothingPageState extends State<ClothingPage> {
       child: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        shape: StadiumBorder(), // Rounded edges
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+        shape: StadiumBorder(), 
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
       ),
     );
   }

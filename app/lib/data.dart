@@ -44,14 +44,14 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
     });
 
     try {
-      // 获取当前时间，并将其格式化为ISO 8601格式
+      
       DateTime now = DateTime.now();
       String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
 
-      // 使用当前时间作为API请求的参数
+      
       Map<String, dynamic> carbonIntensityData = await _carbonIntensityService.fetchCarbonIntensityData(formattedDate);
 
-      // 提取所有 forecast 字段的值和时间
+      
       _carbonIntensityData = carbonIntensityData['data'];
       _forecastValues = _carbonIntensityData.map<int>((entry) => entry['intensity']['forecast']).toList();
       _forecastTimes = _carbonIntensityData.map<String>((entry) => entry['from']).toList();
@@ -80,7 +80,7 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
                         scrollDirection: Axis.horizontal,
                         children: [
                           Container(
-                            width: _forecastValues.length * 100.0, // 设置图表宽度
+                            width: _forecastValues.length * 100.0, 
                             child: LineChart(
                               LineChartData(
                                 titlesData: FlTitlesData(
@@ -92,10 +92,10 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
                                     getTitles: (value) {
                                       int index = value.toInt();
                                       if (index >= 0 && index < _forecastTimes.length) {
-                                        // 解析时间
+                                        
                                         DateTime time = DateTime.parse(_forecastTimes[index]);
 
-                                        // 如果时间的分钟部分为零，则显示整点时间
+                                        
                                         if (time.minute == 0) {
                                           return DateFormat('HH:mm').format(time);
                                         } else {
@@ -112,7 +112,7 @@ class _CarbonIntensityPageState extends State<CarbonIntensityPage> {
                                     margin: 10,
                                     reservedSize: 40,
                                     getTitles: (value) {
-                                      // 如果当前值除以 5 的余数为 0，则显示刻度，否则不显示
+                                      
                                       if (value % 5 == 0) {
                                         return value.toInt().toString();
                                       } else {

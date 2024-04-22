@@ -48,7 +48,7 @@ class _ColorThemePageState extends State<ColorThemePage> {
   _onColorTap(int index) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     themeProvider.themeColor = _colors[index];
-    Navigator.of(context).pop(); // 返回设置页面
+    Navigator.of(context).pop(); 
   }
 
 

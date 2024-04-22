@@ -57,12 +57,12 @@ class _UsagePageState extends State<UsagePage> {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
       _prefsInitialized = true;
-      _loadSavedData(); // Call loadSavedData here
+      _loadSavedData(); 
     });
   }
 
   _loadSavedData() {
-    if (!_prefsInitialized) return; // Check if _prefs has been initialized
+    if (!_prefsInitialized) return; 
     setState(() {
       widget.controller1.text = _prefs.getString('usage_q1') ?? '';
       widget.controller2.text = _prefs.getString('usage_q2') ?? '';
@@ -104,11 +104,11 @@ class _UsagePageState extends State<UsagePage> {
             buildQuestion("How many sets of disposable tableware did you use?", widget.controller2, 'usage_q2'),
             buildQuestion("How many grams of paper products did you use?", widget.controller3, 'usage_q3'),
             SizedBox(height: 30),
-            // Button to calculate the carbon footprint
+            
             buildButton("Calculate Your Carbon Footprint", Colors.green, calculateCarbonFootprint),
             if (carbonFootprintResult.isNotEmpty) Text(carbonFootprintResult),
             SizedBox(height: 20),
-            // Button to calculate the Overall carbon footprint
+            
             buildButton("Calculate Your Overall Carbon Footprint", Colors.green, OverallCarbonFootprint),
             if (OverallcarbonFootprintResult.isNotEmpty) Text(OverallcarbonFootprintResult),
             SizedBox(height: 20),
@@ -131,7 +131,7 @@ class _UsagePageState extends State<UsagePage> {
           decoration: InputDecoration(
               border: OutlineInputBorder(), hintText: 'Enter your answer here'),
         ),
-        SizedBox(height: 20), // Adds space between questions
+        SizedBox(height: 20), 
       ],
     );
   }
@@ -142,8 +142,8 @@ class _UsagePageState extends State<UsagePage> {
       child: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        shape: StadiumBorder(), // Rounded edges
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding inside button
+        shape: StadiumBorder(), 
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
       ),
     );
   }

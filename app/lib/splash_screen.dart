@@ -21,14 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // 垂直居中
+        mainAxisAlignment: MainAxisAlignment.center, 
         children: <Widget>[
          Image.asset('assets/images/earth.jpg', width: 500), 
          SizedBox(height: 20), 
           Text(
             'Welcome!',
             style: TextStyle(
-              fontSize: 24, // 文字大小
+              fontSize: 24, 
               fontWeight: FontWeight.bold,
             ),
           ),
