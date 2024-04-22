@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         primaryColor: themeColor,
         scaffoldBackgroundColor: themeColor, 
       ),
+      title: 'carbon_emission_calculator',
     );
   }
 }

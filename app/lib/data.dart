@@ -6,7 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 class CarbonIntensityService {
   Future<Map<String, dynamic>> fetchCarbonIntensityData(String from) async {
-    String apiUrl = 'https://api.carbonintensity.org.uk/intensity/$from/fw24h';
+    String apiUrl = 'https://api.carbonintensity.org.uk/intensity/$from/fw48h';
 
     final response = await http.get(Uri.parse(apiUrl), headers: {
       'Accept': 'application/json',
