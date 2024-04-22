@@ -2,7 +2,7 @@
     <application
         android:label="carbon_emission_calculator"
         android:name="${applicationName}"
-        android:icon="@drawable/netzero">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
