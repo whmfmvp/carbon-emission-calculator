@@ -40,9 +40,8 @@ jobs:
       - name: Get pubspec version
         id: get_flutter_app_version
         run: |
-          VERSION=$(yq e '.version' app/pubspec.yaml | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+')
-          echo "TAG_VERSION=${VERSION%%+*}" >> $GITHUB_ENV
-          echo "::set-output name=TAG_VERSION::${VERSION%%+*}"
+          VERSION=$(yq .version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' pubspec.yaml | head -n 1)
+          echo "TAG_VERSION=$VERSION" >> $GITHUB_OUTPUT
       
   
       - name: Create git tag
