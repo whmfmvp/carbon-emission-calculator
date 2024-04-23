@@ -3,8 +3,8 @@ name: Flutter Build and Upload Android APK
 on:
   push:                 # This is the condition that the action will run on
     branches: [ main ]  # In this case when you push your code into GitHub
-    tags:
-     - v2.0.5          # In this case when you tag your commit with v1.0.0 for example
+   # tags:
+    # - "v*.*.*"          # In this case when you tag your commit with v1.0.0 for example
 
 defaults:  
   run:
@@ -20,12 +20,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3     # Checkout the Repository on the Virtual Machine
 
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.34.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-          RELEASE_BRANCHES: main,release
+      - name: Generate tag
+        id: tag
+        run: echo "::set-output name=tag::v$(date +'%Y%m%d%H%M%S')"
+      
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/app/outputs/bundle/release/*.aab,build/app/outputs/flutter-apk/*.apk
+          tag: ${{ steps.tag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: Set up JDK              # Setup JAVA to build the Android APK for us
         uses: actions/setup-java@v3
