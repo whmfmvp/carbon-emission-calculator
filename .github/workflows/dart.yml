@@ -43,11 +43,13 @@ jobs:
           VERSION=$(yq .version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' pubspec.yaml | head -n 1)
           echo "TAG_VERSION=$VERSION" >> $GITHUB_OUTPUT
       
-  
-      - name: Create git tag
+
+      - name: Create git tag for auto trigger
+        if: ${{ github.event_name == 'push' }}
         run: |
-          git tag "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
-          git push origin "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
+          git tag ${{ env.TAG_VERSION }}
+          git push origin ${{ env.TAG_VERSION }}
+
         
       - name: Install Flutter               # Install Flutter
         uses: subosito/flutter-action@v2
