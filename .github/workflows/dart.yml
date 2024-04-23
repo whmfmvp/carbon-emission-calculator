@@ -44,11 +44,9 @@ jobs:
           echo "TAG_VERSION=$VERSION" >> $GITHUB_OUTPUT
       
 
-      - name: Create git tag for auto trigger
-        if: ${{ github.event_name == 'push' }}
+      - name: Create git tag
         run: |
-          git tag ${{ env.TAG_VERSION }}
-          git push origin ${{ env.TAG_VERSION }}
+          git tag "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
 
         
       - name: Install Flutter               # Install Flutter
