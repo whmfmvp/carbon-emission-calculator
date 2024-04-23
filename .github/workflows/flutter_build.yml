@@ -1,52 +1,28 @@
 name: Flutter Build and Upload Android APK
 
 on:
-  push:                 # This is the condition that the action will run on
-    branches: [ main ]  # In this case when you push your code into GitHub
-   # tags:
-    # - "v*.*.*"          # In this case when you tag your commit with v1.0.0 for example
+  push:
+    branches: [ main ]
 
-defaults:  
+defaults:
   run:
     working-directory: ./app
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # This is the type of machine we want to run the action on
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3     # Checkout the Repository on the Virtual Machine
+        uses: actions/checkout@v3
 
-      - name: Generate tag
-        id: tag
-        run: echo "::set-output name=tag::v$(date +'%Y%m%d%H%M%S')"
-      
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: build/app/outputs/bundle/release/*.aab,build/app/outputs/flutter-apk/*.apk
-          tag: v1.2.43
-          skipIfReleaseExists: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-      - name: Set up JDK              # Setup JAVA to build the Android APK for us
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: microsoft
-
-      #  Decode keystore File from repository secrets
-      #  Keep the keystore file private; don't check it into public source control!
-      
-      #- name: Decode KeyStore File (.jks)            
-      #  run: echo "${{ secrets.KEYSTORE_JKS_PROD }}" | base64 --decode > android/keystore.jks
-
-      #- name: Decode android/key.properties
-      #  run: echo "${{ secrets.KEY_PROPERTIES_PROD }}" | base64 --decode > android/key.properties
 
       - name: Install yq
         uses: mikefarah/yq@v4.42.1
@@ -54,25 +30,21 @@ jobs:
       - name: Get pubspec version
         id: get_flutter_app_version
         run: |
-          VERSION=$(yq .version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' pubspec.yaml | head -n 1)
-          echo "TAG_VERSION=$VERSION" >> $GITHUB_OUTPUT
-  
-      - name: Create git tag
-        run: |
-          git tag "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
+          VERSION=$(yq e .version pubspec.yaml)
+          echo "TAG_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Install Flutter               # Install Flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'main'
 
-      - name: Get Flutter dependencies      # Get the Libraries and Dependencies
+      - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Build APK Release             # Build a release
+      - name: Build APK Release
         run: flutter build apk --release
 
-      - name: Build an AppBundle            # App Bundles are useful for Google Play Store
+      - name: Build an AppBundle
         run: flutter build appbundle --release
 
       - name: Save APK to Artifacts
@@ -91,33 +63,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/bundle/release/*.aab,build/app/outputs/flutter-apk/*.apk"
-          tag: "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
-          # token: ${{ secrets.PERSONAL_RELEASE_TOKEN }}
-
-  # TODO:  Upload to Firebase - for App Distribution
-  # Release job, upload the apk or aab to Firebase App Distribution
-  # release:
-  #   name: Sends Release APK to Firebase
-  #   needs: [ build ]
-  #   runs-on: ubuntu-latest
-  #   steps:
-    
-  #   # Retrieve apk file from GitHub artifacts
-  #   - uses: actions/checkout@v3
-  #   - name: Get flutter-apk from artifacts
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: flutter-apk
-  #  OR
-  #       name: flutter-appbundle
-
-  #   # Upload apk file to Firebase
-  #   - name: Upload artifact to Firebase App Distribution
-  #     uses: wzieba/Firebase-Distribution-Github-Action@v1
-  #     with:
-  #       appId: ${{secrets.FIREBASE_IOS_APP_ID}}
-  #       serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-  #       groups: android-developers
-  #       file: ${{secrets.APP_NAME}}.apk
-  #  OR
-  #       file: ${{secrets.APP_NAME}}.aabdefaults:
+          tag: "v${{ env.TAG_VERSION }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
