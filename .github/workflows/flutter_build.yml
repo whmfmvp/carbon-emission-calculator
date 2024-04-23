@@ -27,8 +27,10 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: build/app/outputs/bundle/release/*.aab,build/app/outputs/flutter-apk/*.apk
-          tag: ${{ steps.tag.outputs.tag }}
+          tag: v1.2.43
+          skipIfReleaseExists: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
 
 
       - name: Set up JDK              # Setup JAVA to build the Android APK for us
